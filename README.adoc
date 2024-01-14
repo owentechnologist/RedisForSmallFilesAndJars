@@ -8,18 +8,28 @@
 :toc-title:
 :toc-placement!:
 
+== Documentation
+
 {name} is a utility that allows users to upload files from their local file system into a Redis instance and store them as binary objects with keynames for later retrieval.  When running this program the user should provide the following command-line args:
 
 * --pushtoredis <true/false>   where false is the default and means the program should pull a file from redis to the local machine
 * --keyname <some name>  this is the name of the key that holds the file object in Redis
-* --filepath <localfilepath>  this is the local file path (including the interesting file itsself) that will be used when reading or writing that file
+* --filepath <localfilepath>  this is the local file path (including the interesting file itself) that will be used when reading or writing that file
 
 Arguments to be used for connecting to Redis are as follows:
 
-* --host <host-name-for-Redis>  example: redis-89090.c309.us-east-2-1.ec2.cloud.redislabs.com
+* --host <host-name-for-Redis>  example: redis-89090.c309.us-west-2-1.ec2.cloud.redislabs.com
 * --port <port-used-by-Redis>  example: 89090
 * --user <user-for-redis-login>  (this is optional and if not supplied will be set to 'default') example: redisuserbob
-* --password <password-for-redis-login> (this is optional and if not supplied will be set to and empty password)  example: supers3cr3t321
+* --password <password-for-redis-login> (this is optional and if not supplied will be set to an empty password)  example: supers3cr3t321
 
-The normal workflow for the use of this program is you run it on the machine where the interesting file lives with the argument --pushtoredis true and then later run it on the machine that wants to recieve the interesting file with the argument --pushtoredis false
+The normal workflow for the use of this program is you run it on the machine where the interesting file lives with the argument --pushtoredis true and then later run it on the machine that wants to receive the interesting file with the argument --pushtoredis false
  
+A sample run to upload the file interesting.jar to Redis to a key called codefile1 might look like:
+
+  mvn compile exec:java -Dexec.cleanupDaemonThreads=false -Dexec.args="--host  redis-89090.c309.us-west-2-1.ec2.cloud.redislabs.com --port 89090 --password sup3rs3cr3t321 --pushtoredis true --keyname codefile1 --filepath /Users/filedude/files/interesting.jar"
+
+To later store the file (now in Redis) to a machine's local file system target the key called codefile1 :
+
+  mvn compile exec:java -Dexec.cleanupDaemonThreads=false -Dexec.args="--host  redis-89090.c309.us-west-2-1.ec2.cloud.redislabs.com --port 89090 --password sup3rs3cr3t321 --pushtoredis false --keyname codefile1 --filepath /Users/receiver/project2/lib/interesting.jar"
+
