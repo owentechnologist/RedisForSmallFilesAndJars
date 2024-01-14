@@ -1,0 +1,25 @@
+:linkattrs:
+:project-owner:   redis-field-engineering
+:project-name:    redis-for-small-files-and-jars
+:project-group:   com.redislabs.sa.ot
+:project-version: 0.0.1
+:name:            Redis For Small Files and Jars
+:toc:
+:toc-title:
+:toc-placement!:
+
+{name} is a utility that allows users to upload files from their local file system into a Redis instance and store them as binary objects with keynames for later retrieval.  When running this program the user should provide the following command-line args:
+
+* --pushtoredis <true/false>   where false is the default and means the program should pull a file from redis to the local machine
+* --keyname <some name>  this is the name of the key that holds the file object in Redis
+* --filepath <localfilepath>  this is the local file path (including the interesting file itsself) that will be used when reading or writing that file
+
+Arguments to be used for connecting to Redis are as follows:
+
+* --host <host-name-for-Redis>  example: redis-89090.c309.us-east-2-1.ec2.cloud.redislabs.com
+* --port <port-used-by-Redis>  example: 89090
+* --user <user-for-redis-login>  (this is optional and if not supplied will be set to 'default') example: redisuserbob
+* --password <password-for-redis-login> (this is optional and if not supplied will be set to and empty password)  example: supers3cr3t321
+
+The normal workflow for the use of this program is you run it on the machine where the interesting file lives with the argument --pushtoredis true and then later run it on the machine that wants to recieve the interesting file with the argument --pushtoredis false
+ 
